@@ -11,7 +11,7 @@ namespace Piece
 
         public bool IsTaken { get; private set; } = false;
 
-        public Coordinate Position { get; private set; }
+        public Coordinate Position { get; set; }
 
         public Chessman(ChessColor color, Coordinate initialPosition)
         {
@@ -21,7 +21,8 @@ namespace Piece
 
         // TODO: implement in all subclasses
         public abstract IEnumerable<Coordinate> GetAvailableMoves();
-
+        public abstract string Print();
+       
         public void Move(Coordinate target)
         {
             bool isMoveAllowed = GetAvailableMoves()
@@ -34,7 +35,7 @@ namespace Piece
 
             Position = target;   
         }
-
+    
         public void Take()
         {
             IsTaken = true;

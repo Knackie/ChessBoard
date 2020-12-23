@@ -29,8 +29,8 @@ namespace Board
         public GameState()
         {
             // TODO: create the player's classes
-            Black = new HumanPlayer(ChessColor.Black, new List<Chessman>());
-            White = new HumanPlayer(ChessColor.White, new List<Chessman>());
+            Black = new HumanPlayer(ChessColor.Black, PieceFactory.CreatePiecesSet(ChessColor.Black));
+            White = new HumanPlayer(ChessColor.White, PieceFactory.CreatePiecesSet(ChessColor.White));
 
             // Create the board for the players
             Board = new Chessboard(Black.Pieces, White.Pieces);
@@ -40,8 +40,14 @@ namespace Board
             History.Push(this.Copy());
         }
 
+        public string Print()
+        {
+            return Board.Print();
+        }
+
         public GameState Copy()
             => new GameState(Black, Board, White);
+
 
         public void Play()
         {

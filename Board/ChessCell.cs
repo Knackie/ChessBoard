@@ -13,9 +13,15 @@ namespace Board
         public bool HasPiece
             => Piece != null;
 
-        public ChessCell(Coordinate coordinate)
+        public ChessCell(Coordinate coordinate, Chessman? NewPiece = null)
         {
             Coordinate = coordinate;
+            Piece = NewPiece;
+            if (Piece == null)
+            {
+                return;
+            }
+            Piece.Position = coordinate;
         }
 
         public void MoveContentTo(ChessCell target)
@@ -29,7 +35,20 @@ namespace Board
 
             Piece = null;
         }
-
+        public string Print()
+        {
+            string value = "|";
+            if (Piece == null)
+            {
+                value += " ";
+            }
+            else
+            {
+                value += Piece.Print();
+            }
+            value += "|";
+            return value;
+        }
         private void SetPiece(Chessman incomingPiece)
         {
             if (HasPiece)

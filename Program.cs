@@ -9,12 +9,14 @@ namespace ChessBoard
         {
             var game = new GameState();
             Console.WriteLine("Game created");
-
+            var value = game.Print();
+            Console.Write(value);
             while (!game.IsGameOver)
             {
                 Console.WriteLine("--- Player move ---");
                 game.Play();
             }
+            
 
             Console.WriteLine("Game has ended !");
         }

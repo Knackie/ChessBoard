@@ -19,5 +19,9 @@ namespace Piece
 
             return new[] { move };
         }
+        public override string Print()
+        {
+            return "P";
+        }
     }
 }
