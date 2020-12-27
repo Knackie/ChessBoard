@@ -16,6 +16,7 @@ namespace Piece
 
 			for (int i = 0; i < NumberPiece; i++)
 			{
+				// TODO : create and add other pieces !
 				value.Add(new Pawn(color, DefaultCoordinate));
 			}
 			

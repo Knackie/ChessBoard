@@ -43,7 +43,6 @@ namespace Board
         public GameState Copy()
             => new GameState(Black, Board, White);
 
-
         public void Play()
         {
             if (IsGameOver)
