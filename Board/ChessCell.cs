@@ -67,11 +67,13 @@ namespace Board
 
         private void UpgradeToBlackQueen()
         {
+            //TODO : implemente the black upgrade
             throw new NotImplementedException();
         }
 
         private void UpgradeToWhiteQueen()
         {
+            //TODO : implemente the white upgrade
             throw new NotImplementedException();
         }
        
