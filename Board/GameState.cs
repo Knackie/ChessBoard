@@ -40,11 +40,6 @@ namespace Board
             History.Push(this.Copy());
         }
 
-        public string Print()
-        {
-            return Board.Print();
-        }
-
         public GameState Copy()
             => new GameState(Black, Board, White);
 
@@ -79,5 +74,8 @@ namespace Board
 
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+            => Board.ToString();
     }
 }

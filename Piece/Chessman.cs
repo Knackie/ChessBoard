@@ -21,8 +21,7 @@ namespace Piece
 
         // TODO: implement in all subclasses
         public abstract IEnumerable<Coordinate> GetAvailableMoves();
-        public abstract string Print();
-       
+        
         public void Move(Coordinate target)
         {
             bool isMoveAllowed = GetAvailableMoves()
@@ -41,5 +40,8 @@ namespace Piece
             IsTaken = true;
             Position = Coordinate.OutOfBoard;
         }
+
+        public abstract override string ToString();
+
     }
 }

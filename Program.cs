@@ -8,9 +8,11 @@ namespace ChessBoard
         static void Main(string[] args)
         {
             var game = new GameState();
+
             Console.WriteLine("Game created");
-            var value = game.Print();
-            Console.Write(value);
+
+            Console.Write(game.ToString());
+
             while (!game.IsGameOver)
             {
                 Console.WriteLine("--- Player move ---");

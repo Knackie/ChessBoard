@@ -35,20 +35,10 @@ namespace Board
 
             Piece = null;
         }
-        public string Print()
-        {
-            string value = "|";
-            if (Piece == null)
-            {
-                value += " ";
-            }
-            else
-            {
-                value += Piece.Print();
-            }
-            value += "|";
-            return value;
-        }
+
+        public override string ToString()
+            => $"{Piece?.ToString() ?? " *Empty* "}|";
+
         private void SetPiece(Chessman incomingPiece)
         {
             if (HasPiece)
