@@ -3,9 +3,6 @@
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <FileUpgradeFlags>40</FileUpgradeFlags>
-    <UpgradeBackupLocation>C:\Users\Knacki\ChessBoard\Backup4\</UpgradeBackupLocation>
-    <OldToolsVersion>Current</OldToolsVersion>
     <LangVersion>9.0</LangVersion>
   </PropertyGroup>
 </Project>
