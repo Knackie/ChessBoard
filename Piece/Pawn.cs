@@ -19,5 +19,8 @@ namespace Piece
 
             return new[] { move };
         }
+
+        public override string ToString()
+            => $"P ({Color})";
     }
 }
