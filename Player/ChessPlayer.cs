@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Piece;
 using System.Linq;
 using Utils;
+using Board;
 
 namespace Player
 {
@@ -12,8 +13,8 @@ namespace Player
         public readonly List<Chessman> Pieces;
 
         // TODO: add all conditions (checkmate, etc.)
-        public bool IsStuck
-            => Pieces.Select(piece => piece.GetAvailableMoves())
+        public bool IsStuck(GameState gameState)
+            => Pieces.Select(piece => piece.GetAvailableMoves(gameState))
                 .Any();
 
         public ChessPlayer(ChessColor color, List<Chessman> pieces)

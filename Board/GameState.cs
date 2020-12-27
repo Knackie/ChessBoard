@@ -19,8 +19,8 @@ namespace Board
         public readonly Stack<GameState> History;
 
         public bool IsGameOver
-            => Black.IsStuck
-                || White.IsStuck;
+            => Black.IsStuck(this)
+                || White.IsStuck(this);
 
         private GameState(ChessPlayer black, Chessboard board, ChessPlayer white)
             => (Black, Board, White, History)
