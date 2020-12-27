@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Utils;
+using Board;
 
 namespace Piece
 {
     public abstract class Chessman
     {
-        protected readonly ChessColor Color;
+        public readonly ChessColor Color;
 
         public bool IsTaken { get; private set; } = false;
 
@@ -20,11 +21,11 @@ namespace Piece
         }
 
         // TODO: implement in all subclasses
-        public abstract IEnumerable<Coordinate> GetAvailableMoves();
+        public abstract IEnumerable<Coordinate> GetAvailableMoves(GameState gameState);
         
-        public void Move(Coordinate target)
+        public void Move(Coordinate target, GameState gameState)
         {
-            bool isMoveAllowed = GetAvailableMoves()
+            bool isMoveAllowed = GetAvailableMoves(gameState)
                 .Contains(target);
 
             if (!isMoveAllowed)

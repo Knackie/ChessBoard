@@ -13,15 +13,17 @@ namespace Board
         public bool HasPiece
             => Piece != null;
 
+        public ChessColor? Color
+           => Piece?.Color;
+
         public ChessCell(Coordinate coordinate, Chessman? NewPiece = null)
         {
             Coordinate = coordinate;
             Piece = NewPiece;
-            if (Piece == null)
+            if (Piece != null)
             {
-                return;
+                Piece.Position = coordinate;
             }
-            Piece.Position = coordinate;
         }
 
         public void MoveContentTo(ChessCell target)
@@ -33,9 +35,46 @@ namespace Board
 
             target.SetPiece(Piece!);
 
+
             Piece = null;
         }
 
+        private void UpgradeToQueen()
+        {
+            if (!(Piece is Pawn))
+            {
+                return;
+            }
+
+            switch (Piece.Color)
+            {
+                case ChessColor.Black :
+                    if (Piece.Position.Y == Chessboard.Dimension - 1)
+                    {
+                        UpgradeToBlackQueen();
+                    }
+                    break;
+                case ChessColor.White:
+                    if (Piece.Position.Y == 0)
+                    {
+                        UpgradeToWhiteQueen();
+                    }
+                    break;
+                default:
+                    break;
+            }    
+        }
+
+        private void UpgradeToBlackQueen()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void UpgradeToWhiteQueen()
+        {
+            throw new NotImplementedException();
+        }
+       
         public override string ToString()
             => $"{Piece?.ToString() ?? " *Empty* "}|";
 

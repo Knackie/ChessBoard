@@ -2,22 +2,68 @@ using System.Drawing;
 using System;
 using System.Collections.Generic;
 using Utils;
+using Board;
+using System.Linq;
 
 namespace Piece
 {
-    public class Pawn : Chessman
+    public class Pawn : Chessman, IHasFirstMove
     {
         public Pawn(ChessColor color, Coordinate initialPosition)
             : base(color, initialPosition) { }
 
-        // TODO: check if possible according to Chessboard.Dimension
-        public override IEnumerable<Coordinate> GetAvailableMoves()
-        {
-            var move = Color == ChessColor.White
-                ? new Coordinate(Position.X, Position.Y + 1)
-                : new Coordinate(Position.X, Position.Y - 1);
+        public bool IsFirstMove { get; set; } = true;
 
-            return new[] { move };
+        public bool IsDiagonalValid(Coordinate diagonalCoordinate, GameState gameState)
+        {
+            var diagonalCellColor = gameState.Board
+               .GetCellFor(diagonalCoordinate)
+               .Color;
+
+            var isDiagonalCellEatable = diagonalCellColor != Color
+                && diagonalCellColor != null;
+
+            return Chessboard.IsInBoard(diagonalCoordinate)
+               && isDiagonalCellEatable;
+        }
+
+        public override IEnumerable<Coordinate> GetAvailableMoves(GameState gameState)
+        {
+            var moves = new List<Coordinate>();
+
+            // Standard move : move of one cell in front of the pawn
+            var nextCellInFront = new Coordinate(Position.X, Position.Y + 1);
+
+            if (Chessboard.IsInBoard(nextCellInFront)
+                && gameState.Board.IsEmptyCell(nextCellInFront))
+            {
+                moves.Add(nextCellInFront);
+            }
+
+            // Special move : go two cell in front of the pawn if it's the first move
+            var secondNextCellInFront = new Coordinate(Position.X, Position.Y + 2);
+
+            if (IsFirstMove 
+                && gameState.Board.IsEmptyCell(secondNextCellInFront)
+                && Chessboard.IsInBoard(secondNextCellInFront))
+            {
+                moves.Add(secondNextCellInFront);
+            }
+
+            // Eating in diagonal 
+            var upRightCellInFront = new Coordinate(Position.X + 1, Position.Y + 1);
+            if (IsDiagonalValid(upRightCellInFront, gameState))
+            {
+                moves.Add(upRightCellInFront);
+            }
+
+            var upLeftCellInFront = new Coordinate(Position.X - 1, Position.Y + 1);
+            if (IsDiagonalValid(upLeftCellInFront, gameState))
+            {
+                moves.Add(upLeftCellInFront);
+            }
+
+            return moves;
         }
 
         public override string ToString()
