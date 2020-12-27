@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Piece;
 using Utils;
-using System;
+using System.Linq;
 
 namespace Board
 {
@@ -14,43 +14,42 @@ namespace Board
         private Chessboard(ChessCell[,] board)
             => Board = board;
 
+        private ChessCell InitializePieceAtCoordinate(Coordinate coordinate, Stack<Chessman> remainingBlackPieces, Stack<Chessman> remainingWhitePieces)
+        {
+            var rowsForPieces = 2;
+            
+            var whitePiecesColumnRange = Enumerable.Range(0, rowsForPieces);
+            var blackPiecesColumnRange = Enumerable.Range(Dimension - rowsForPieces, Dimension);
+
+            var currentColumn = coordinate.X;
+
+            if (whitePiecesColumnRange.Contains(currentColumn))
+            {
+                return new ChessCell(coordinate, remainingWhitePieces.Pop());
+            } 
+
+            if (blackPiecesColumnRange.Contains(currentColumn))
+            {
+                return new ChessCell(coordinate, remainingBlackPieces.Pop());
+            }
+
+            return new ChessCell(coordinate);
+        }
+
         public Chessboard(List<Chessman> blackPieces, List<Chessman> whitePieces) 
         {
             // Initialize the board
             Board = new ChessCell[Dimension, Dimension];
-
-            // Fill the board without piece
-            for (int i = 0; i < Dimension; i++)
-            {
-                for (int j = 0; j < Dimension; j++)
-                {
-                    var currentCoordinate = new Coordinate(i, j);
-                    Board[i, j] = new ChessCell(currentCoordinate);
-                }
-            }
             
-            const int rowsForPieces = 2;
-            
-            var remainingWhitePieces = new Stack<Chessman>(whitePieces);
             var remainingBlackPieces = new Stack<Chessman>(blackPieces);
+            var remainingWhitePieces = new Stack<Chessman>(whitePieces);
 
-            // Initialize Black pieces at the top of the board
-            for (int i = 0; i < rowsForPieces; ++i)
+            for (int row = 0; row < Dimension; ++row)
             {
-                for (int j = 0; j < Dimension; ++j)
+                for (int column = 0; column < Dimension; ++column)
                 {
-                    var currentCoordinate = new Coordinate(i, j);
-                    Board[i, j] = new ChessCell(currentCoordinate, remainingBlackPieces.Pop());
-                }
-            }
-
-            // Initialize White pieces at the end of the board
-            for (int i = Dimension - 1; i > Dimension - rowsForPieces - 1; --i)
-            {
-                for (int j = 0; j < Dimension; j++)
-                {
-                    var currentCoordinate = new Coordinate(i, j);
-                    Board[i, j] = new ChessCell(currentCoordinate, remainingWhitePieces.Pop());
+                    var currentCoordinate = new Coordinate(row, column);
+                    Board[row, column] = InitializePieceAtCoordinate(currentCoordinate, remainingBlackPieces, remainingWhitePieces);
                 }
             }
         }
