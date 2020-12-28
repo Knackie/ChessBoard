@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Piece;
 using System.Linq;
 using Utils;
-using Board;
+using Game;
 
 namespace Player
 {

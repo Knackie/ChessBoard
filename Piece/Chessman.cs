@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Utils;
-using Board;
+using Game;
 
 namespace Piece
 {
@@ -21,11 +21,12 @@ namespace Piece
         }
 
         // TODO: implement in all subclasses
-        public abstract IEnumerable<Coordinate> GetAvailableMoves(GameState gameState);
+        public abstract IEnumerable<Move> GetAvailableMoves(GameState gameState);
         
         public void Move(Coordinate target, GameState gameState)
         {
-            bool isMoveAllowed = GetAvailableMoves(gameState)
+            //TODO : make the method
+        /*    bool isMoveAllowed = GetAvailableMoves(gameState)
                 .Contains(target);
 
             if (!isMoveAllowed)
@@ -33,7 +34,7 @@ namespace Piece
                 throw new ArgumentException("Impossible move !");
             }
 
-            Position = target;   
+            Position = target;   */
         }
     
         public void Take()

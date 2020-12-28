@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Board;
 using Utils;
+using Game;
 
 namespace Piece
 {
@@ -68,9 +65,10 @@ namespace Piece
             return 0;
         }
 
-        public override IEnumerable<Coordinate> GetAvailableMoves(GameState gameState)
+        public override IEnumerable<Move> GetAvailableMoves(GameState gameState)
         {
-            var moves = new List<Coordinate>();
+            /*
+            var moves = new List<Move>();
 
             var minY = MinYIndexOfLine(gameState);
             if (minY != Position.Y)
@@ -110,8 +108,8 @@ namespace Piece
             }
 
             // check from current position to max index if one piece for x to x max, x to x min, y to y min and y to y max
-
-            return new List<Coordinate>();
+            */
+            return new List<Move>();
         }
 
         public override string ToString()

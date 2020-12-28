@@ -1,9 +1,7 @@
-using System.Drawing;
-using System;
 using System.Collections.Generic;
-using Utils;
 using Board;
-using System.Linq;
+using Game;
+using Utils;
 
 namespace Piece
 {
@@ -27,9 +25,9 @@ namespace Piece
                && isDiagonalCellEatable;
         }
 
-        public override IEnumerable<Coordinate> GetAvailableMoves(GameState gameState)
+        public override IEnumerable<Move> GetAvailableMoves(GameState gameState)
         {
-            var moves = new List<Coordinate>();
+            var moves = new List<Move>();
 
             // Standard move : move of one cell in front of the pawn
             var nextCellInFront = new Coordinate(Position.X, Position.Y + 1);

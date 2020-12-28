@@ -1,5 +1,5 @@
 ﻿using System;
-using Board;
+using Game;
 
 namespace Main
 {

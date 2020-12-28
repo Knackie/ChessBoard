@@ -3,8 +3,9 @@ using System;
 using Player;
 using Piece;
 using Utils;
+using Board;
 
-namespace Board
+namespace Game
 {
     public class GameState
     {
