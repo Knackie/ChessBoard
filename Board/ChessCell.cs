@@ -35,7 +35,6 @@ namespace Board
 
             target.SetPiece(Piece!);
 
-
             Piece = null;
         }
 
@@ -88,6 +87,7 @@ namespace Board
             }
 
             Piece = incomingPiece;
+            Piece.Position = Coordinate;
         }
     }
 }

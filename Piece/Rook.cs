@@ -2,6 +2,7 @@
 using Board;
 using Utils;
 using Game;
+using Game.Moves;
 
 namespace Piece
 {

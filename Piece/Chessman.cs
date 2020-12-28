@@ -3,11 +3,14 @@ using System.Linq;
 using System.Collections.Generic;
 using Utils;
 using Game;
+using Game.Moves;
 
 namespace Piece
 {
     public abstract class Chessman
     {
+        public int MoveCount { get; private set; } = 0;
+
         public readonly ChessColor Color;
 
         public bool IsTaken { get; private set; } = false;
@@ -26,15 +29,16 @@ namespace Piece
         public void Move(Coordinate target, GameState gameState)
         {
             //TODO : make the method
-        /*    bool isMoveAllowed = GetAvailableMoves(gameState)
-                .Contains(target);
+            /*    bool isMoveAllowed = GetAvailableMoves(gameState)
+                    .Contains(target);
 
-            if (!isMoveAllowed)
-            {
-                throw new ArgumentException("Impossible move !");
-            }
+                if (!isMoveAllowed)
+                {
+                    throw new ArgumentException("Impossible move !");
+                }
 
-            Position = target;   */
+                Position = target;   */
+            ++MoveCount;
         }
     
         public void Take()
