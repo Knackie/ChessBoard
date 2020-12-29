@@ -6,113 +6,121 @@ using Game.Moves;
 
 namespace Piece
 {
-    public class Rook : Chessman, IHasFirstMove
-    {
-        public bool IsFirstMove { get; set; } = true;
+	public class Rook : Chessman, IHasFirstMove
+	{
+		public bool IsFirstMove { get; set; } = true;
 
-        public Rook(ChessColor color, Coordinate initialPosition)
-            : base(color, initialPosition) { }
+		public Rook(ChessColor color, Coordinate initialPosition)
+			: base(color, initialPosition) { }
 
-        private int MinXIndexOfLine( GameState gameState)
-        {
-            for (int i = Position.X + 1; i < Chessboard.Dimension; i++)
-            {
-                if (!gameState.Board.IsEmptyCell(new Coordinate(Position.X, i)))
-                {
-                    return i - 1;
-                }
+		private int MinXIndexOfLine(Chessboard board)
+		{
+			for (int i = Position.X + 1; i < Chessboard.Dimension; i++)
+			{
+				var target = new Coordinate(i, Position.Y);
+				if (!board.IsEmptyCell(target))
+				{
+					return i - 1;
+				}
 
-            }
-            return Chessboard.Dimension - 1;
-        }
+			}
+			return Chessboard.Dimension - 1;
+		}
 
-        private int MaxXIndexOfLine( GameState gameState)
-        {
-            for (int i = Position.X - 1; i >= 0; i--)
-            {
-                if (!gameState.Board.IsEmptyCell(new Coordinate(i, Position.Y)))
-                {
-                    return i + 1;
-                }
+		private int MaxXIndexOfLine(Chessboard board)
+		{
+			for (int i = Position.X - 1; i >= 0; i--)
+			{
+				var target = new Coordinate(i, Position.Y);
+				if (!board.IsEmptyCell(target))
+				{
+					return i + 1;
+				}
 
-            }
-            return 0;
-        }
+			}
+			return 0;
+		}
 
-        private int MaxYIndexOfLine(GameState gameState)
-        {
-            for (int i = Position.Y + 1; i < Chessboard.Dimension; i++)
-            {
-                if (!gameState.Board.IsEmptyCell(new Coordinate(Position.X, i)))
-                {
-                    return i - 1;
-                }
+		private int MaxYIndexOfLine(Chessboard board)
+		{
+			for (int i = Position.Y + 1; i < Chessboard.Dimension; i++)
+			{
+				var target = new Coordinate(Position.X, i);
 
-            }
-            return Chessboard.Dimension - 1;
+				var piece = board.GetCellFor(target).Piece;
 
-        }
+				if (!board.IsEmptyCell(target)
+						|| piece.Color != Color)
+				{
+					return i - 1;
+				}
+			}
+			return Chessboard.Dimension - 1;
 
-        private int MinYIndexOfLine(GameState gameState)
-        {
-            for (int i = Position.Y-1; i >= 0; i--)
-            {
-                if (!gameState.Board.IsEmptyCell(new Coordinate(Position.X, i)))
-                {
-                    return i + 1;
-                }
+		}
 
-            }
-            return 0;
-        }
+		private int MinYIndexOfLine(Chessboard board)
+		{
+			for (int i = Position.Y-1; i >= 0; i--)
+			{
+				var target = new Coordinate(Position.X, i);
+				if (!board.IsEmptyCell(target))
+				{
+					return i + 1;
+				}
 
-        public override IEnumerable<Move> GetAvailableMoves(GameState gameState)
-        {
-            var moves = new List<Move>();
+			}
+			return 0;
+		}
 
-            var minY = MinYIndexOfLine(gameState);
-            if (minY != Position.Y)
-            {
-                for (int i = 0; i > minY; i--)
-                {
-                    moves.Add(new SimpleMove( new(Position.X, i), gameState, this));
-                }
+		public override IEnumerable<Move> GetAvailableMoves(GameState gameState)
+		{
+			var board = gameState.Board;
+			var moves = new List<Move>();
 
-            }
-            var maxY = MinYIndexOfLine(gameState);
-            if (maxY != Position.Y)
-            {
-                for (int i = 0; i < maxY; i++)
-                {
-                    moves.Add(new SimpleMove( new(Position.X, i), gameState, this));
-                }
+			var minY = MinYIndexOfLine(board);
+			if (minY != Position.Y)
+			{
+				for (int i = 0; i > minY; i--)
+				{
+					moves.Add(new SimpleMove( new(Position.X, i), gameState, this));
+				}
 
-            }
-            var minX = MinYIndexOfLine(gameState);
-            if (minX != Position.Y)
-            {
-                for (int i = 0; i > minX; i--)
-                {
-                    moves.Add(new SimpleMove( new(i, Position.Y), gameState, this));
-                }
+			}
+			var maxY = MinYIndexOfLine(board);
+			if (maxY != Position.Y)
+			{
+				for (int i = 0; i < maxY; i++)
+				{
+					moves.Add(new SimpleMove( new(Position.X, i), gameState, this));
+				}
 
-            }
-            var maxX = MinYIndexOfLine(gameState);
-            if (maxX != Position.Y)
-            {
-                for (int i = 0; i < maxX; i--)
-                {
-                    moves.Add(new SimpleMove( new( i, Position.Y), gameState, this));
-                }
+			}
+			var minX = MinYIndexOfLine(board);
+			if (minX != Position.Y)
+			{
+				for (int i = 0; i > minX; i--)
+				{
+					moves.Add(new SimpleMove( new(i, Position.Y), gameState, this));
+				}
 
-            }
+			}
+			var maxX = MinYIndexOfLine(board);
+			if (maxX != Position.Y)
+			{
+				for (int i = 0; i < maxX; i--)
+				{
+					moves.Add(new SimpleMove( new( i, Position.Y), gameState, this));
+				}
 
-            // check from current position to max index if one piece for x to x max, x to x min, y to y min and y to y max
-				//
-            return new List<Move>();
-        }
+			}
 
-        public override string ToString()
-             => $"R ({Color})";
-    }
+			// check from current position to max index if one piece for x to x max, x to x min, y to y min and y to y max
+			//
+			return new List<Move>();
+		}
+
+		public override string ToString()
+			=> $"R ({Color})";
+	}
 }

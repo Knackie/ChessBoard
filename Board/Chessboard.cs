@@ -5,90 +5,90 @@ using System.Linq;
 
 namespace Board
 {
-    public class Chessboard
-    {
-        public const int Dimension = 8;
+	public class Chessboard
+	{
+		public const int Dimension = 8;
 
-        public readonly ChessCell[,] Board;
+		public readonly ChessCell[,] Board;
 
-        private Chessboard(ChessCell[,] board)
-            => Board = board;
+		private Chessboard(ChessCell[,] board)
+			=> Board = board;
 
-        public Chessboard(List<Chessman> blackPieces, List<Chessman> whitePieces) 
-        {
-            // Initialize the board
-            Board = new ChessCell[Dimension, Dimension];
-            
-            var remainingBlackPieces = new Stack<Chessman>(blackPieces);
-            var remainingWhitePieces = new Stack<Chessman>(whitePieces);
+		public Chessboard(List<Chessman> blackPieces, List<Chessman> whitePieces)
+		{
+			// Initialize the board
+			Board = new ChessCell[Dimension, Dimension];
 
-            for (int row = 0; row < Dimension; ++row)
-            {
-                for (int column = 0; column < Dimension; ++column)
-                {
-                    var currentCoordinate = new Coordinate(row, column);
-                    Board[row, column] = InitializePieceAtCoordinate(currentCoordinate, remainingBlackPieces, remainingWhitePieces);
-                }
-            }
-        }
+			var remainingBlackPieces = new Stack<Chessman>(blackPieces);
+			var remainingWhitePieces = new Stack<Chessman>(whitePieces);
 
-        private ChessCell InitializePieceAtCoordinate(Coordinate coordinate, Stack<Chessman> remainingBlackPieces, Stack<Chessman> remainingWhitePieces)
-        {
-            var rowsForPieces = 2;
+			for (int row = 0; row < Dimension; ++row)
+			{
+				for (int column = 0; column < Dimension; ++column)
+				{
+					var currentCoordinate = new Coordinate(row, column);
+					Board[row, column] = InitializePieceAtCoordinate(currentCoordinate, remainingBlackPieces, remainingWhitePieces);
+				}
+			}
+		}
 
-            var whitePiecesColumnRange = Enumerable.Range(0, rowsForPieces);
-            var blackPiecesColumnRange = Enumerable.Range(Dimension - rowsForPieces, Dimension);
+		private ChessCell InitializePieceAtCoordinate(Coordinate coordinate, Stack<Chessman> remainingBlackPieces, Stack<Chessman> remainingWhitePieces)
+		{
+			var rowsForPieces = 2;
 
-            var currentColumn = coordinate.X;
+			var whitePiecesColumnRange = Enumerable.Range(0, rowsForPieces);
+			var blackPiecesColumnRange = Enumerable.Range(Dimension - rowsForPieces, Dimension);
 
-            if (whitePiecesColumnRange.Contains(currentColumn))
-            {
-                return new ChessCell(coordinate, remainingWhitePieces.Pop());
-            }
+			var currentColumn = coordinate.X;
 
-            if (blackPiecesColumnRange.Contains(currentColumn))
-            {
-                return new ChessCell(coordinate, remainingBlackPieces.Pop());
-            }
+			if (whitePiecesColumnRange.Contains(currentColumn))
+			{
+				return new ChessCell(coordinate, remainingWhitePieces.Pop());
+			}
 
-            return new ChessCell(coordinate);
-        }
+			if (blackPiecesColumnRange.Contains(currentColumn))
+			{
+				return new ChessCell(coordinate, remainingBlackPieces.Pop());
+			}
 
-        public override string ToString()
-        {
-            var toString = string.Empty;
+			return new ChessCell(coordinate);
+		}
 
-            for (int i = 0; i < Dimension; i++)
-            {
-                toString += "|";
-                for (int j =0; j < Dimension; j++)
-                {
-                    toString += Board[i, j].ToString();
-                }
-                toString += "\n";
-            }
+		public override string ToString()
+		{
+			var toString = string.Empty;
 
-            return toString;
-            
-        }
+			for (int i = 0; i < Dimension; i++)
+			{
+				toString += "|";
+				for (int j =0; j < Dimension; j++)
+				{
+					toString += Board[i, j].ToString();
+				}
+				toString += "\n";
+			}
 
-        public bool IsEmptyCell(Coordinate target)
-        {
-           return !GetCellFor(target).HasPiece;
-        }
+			return toString;
 
-        public static bool IsInBoard(Coordinate coordinateToCheck)
-        {
-            return coordinateToCheck.Y < Dimension
-                && coordinateToCheck.Y >= 0
-                && coordinateToCheck.X < Dimension
-                && coordinateToCheck.X >= 0;
-        }
+		}
 
-        public Chessboard Copy()
-            => new Chessboard(Board);
+		public bool IsEmptyCell(Coordinate target)
+		{
+			return !GetCellFor(target).HasPiece;
+		}
 
-        public ChessCell GetCellFor(Coordinate coordinate)
-            => Board[coordinate.X, coordinate.Y];
-    }
+		public static bool IsInBoard(Coordinate coordinateToCheck)
+		{
+			return coordinateToCheck.Y < Dimension
+				&& coordinateToCheck.Y >= 0
+				&& coordinateToCheck.X < Dimension
+				&& coordinateToCheck.X >= 0;
+		}
+
+		public Chessboard Copy()
+			=> new Chessboard(Board);
+
+		public ChessCell GetCellFor(Coordinate coordinate)
+			=> Board[coordinate.X, coordinate.Y];
+	}
 }

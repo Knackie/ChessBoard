@@ -3,31 +3,31 @@ using Utils;
 
 namespace Game.Moves
 {
-    public abstract class Move
-    {
-        public readonly Coordinate Target;
+	public abstract class Move
+	{
+		public readonly Coordinate Target;
 
-        protected readonly GameState GameState;
+		protected readonly GameState GameState;
 
-        protected readonly Chessman Piece;
-        
-        protected Move(Coordinate target, GameState gameState, Chessman piece)
-        {
-            GameState = gameState;
-            Target = target;
-            Piece = piece;
-        }
+		protected readonly Chessman Piece;
 
-        public void DoMove()
-        {
-            var currentPieceCell = GameState.Board.GetCellFor(Piece.Position);
-            var targetCell = GameState.Board.GetCellFor(Target);
+		protected Move(Coordinate target, GameState gameState, Chessman piece)
+		{
+			GameState = gameState;
+			Target = target;
+			Piece = piece;
+		}
 
-            DoMoveIntermediarySteps();
-            
-            currentPieceCell.MoveContentTo(targetCell);
-        }
+		public void DoMove()
+		{
+			var currentPieceCell = GameState.Board.GetCellFor(Piece.Position);
+			var targetCell = GameState.Board.GetCellFor(Target);
 
-        protected abstract void DoMoveIntermediarySteps(); 
-    }
+			DoMoveIntermediarySteps();
+
+			currentPieceCell.MoveContentTo(targetCell);
+		}
+
+		protected abstract void DoMoveIntermediarySteps();
+	}
 }
