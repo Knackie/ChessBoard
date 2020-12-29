@@ -29,5 +29,10 @@ namespace Game.Moves
         }
 
         protected abstract void DoMoveIntermediarySteps();
+
+        public override string ToString()
+        {
+            return "move from " + Piece.Position + " to " + Target;
+        }
     }
 }

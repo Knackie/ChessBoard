@@ -13,10 +13,12 @@ namespace Main
 
             Console.Write(game.ToString());
 
+            game.Play();
+
             while (!game.IsGameOver)
             {
                 Console.WriteLine("--- Player move ---");
-                game.Play();
+               
             }
             
 

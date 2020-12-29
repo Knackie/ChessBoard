@@ -10,11 +10,11 @@ namespace Piece
     {
         private static readonly Coordinate DefaultCoordinate = new Coordinate(0, 0);
 
-        private static List<Pawn> CreateRowOfPawns(ChessColor color)
+        private static List<Pawn> CreateRowOfPawns(ChessColor color, int count = Chessboard.Dimension)
         {
             var pawns = new List<Pawn>();
 
-            for (int i = 0; i < Chessboard.Dimension; i++)
+            for (int i = 0; i < count; i++)
             {
                 pawns.Add(new Pawn(color, DefaultCoordinate));
             }
@@ -25,17 +25,15 @@ namespace Piece
         {
             var color = ChessColor.White;
             var value = new List<Chessman>();
+
+            value.Add(new Rook(color, DefaultCoordinate));
+            
+            value.AddRange(CreateRowOfPawns(color, 6));
+
+            value.Add(new Rook(color, DefaultCoordinate));
+
+            // TODO : create and add other pieces !
             value.AddRange(CreateRowOfPawns(color));
-
-            value.Add(new Rook(color, DefaultCoordinate));
-
-            for (int i = 0; i < 6; i++)
-            {
-                // TODO : create and add other pieces !
-                value.Add(new Pawn(color, DefaultCoordinate));
-            }
-
-            value.Add(new Rook(color, DefaultCoordinate));
 
             return value;
         }
@@ -45,17 +43,14 @@ namespace Piece
             var color = ChessColor.Black;
             var value = new List<Chessman>();
 
-            value.Add(new Rook(color, DefaultCoordinate));
-
-            for (int i = 0; i < 6; i++)
-            {
-                // TODO : create and add other pieces !
-                value.Add(new Pawn(color, DefaultCoordinate));
-            }
-
-            value.Add(new Rook(color, DefaultCoordinate));
-
             value.AddRange(CreateRowOfPawns(color));
+
+            value.Add(new Rook(color, DefaultCoordinate));
+
+            // TODO : create and add other pieces !
+            value.AddRange(CreateRowOfPawns(color, 6));
+
+            value.Add(new Rook(color, DefaultCoordinate));
 
             return value;
         }

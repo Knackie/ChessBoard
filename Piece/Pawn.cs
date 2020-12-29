@@ -47,9 +47,35 @@ namespace Piece
         public override IEnumerable<Move> GetAvailableMoves(GameState gameState)
         {
             var moves = new List<Move>();
+            Coordinate nextCellInFront;
+            Coordinate secondNextCellInFront;
+            Coordinate upRightCellInFront;
+            Coordinate upLeftCellInFront; 
+            var enPassantLeft = new Coordinate(Position.X, Position.Y - 1); 
+            Coordinate enPassantRight = new Coordinate(Position.X, Position.Y + 1); ;
+
+
+
 
             // Standard move : move of one cell in front of the pawn
-            var nextCellInFront = new Coordinate(Position.X, Position.Y + 1);
+            if (Color == ChessColor.White)
+            {
+                nextCellInFront = new Coordinate(Position.X - 1, Position.Y);
+                secondNextCellInFront = new Coordinate(Position.X - 2, Position.Y);
+                upRightCellInFront = new Coordinate(Position.X - 1, Position.Y + 1);
+                upLeftCellInFront = new Coordinate(Position.X - 1, Position.Y + 1);
+
+            }
+            else 
+            {
+                secondNextCellInFront = new Coordinate(Position.X + 2, Position.Y);
+                nextCellInFront = new Coordinate(Position.X + 1, Position.Y);
+                upRightCellInFront = new Coordinate(Position.X + 1, Position.Y + 1);
+                upLeftCellInFront = new Coordinate(Position.X + 1, Position.Y + 1);
+
+
+            }
+            // Standard move : move of one cell in front of the pawn
 
             if (Chessboard.IsInBoard(nextCellInFront)
                     && gameState.Board.IsEmptyCell(nextCellInFront))
@@ -58,30 +84,27 @@ namespace Piece
             }
 
             // Special move : go two cell in front of the pawn if it's the first move
-            var secondNextCellInFront = new Coordinate(Position.X, Position.Y + 2);
 
             if (IsFirstMove
                     && gameState.Board.IsEmptyCell(secondNextCellInFront)
-                    && Chessboard.IsInBoard(secondNextCellInFront))
+                    && Chessboard.IsInBoard(secondNextCellInFront)
+                    && Chessboard.IsInBoard(nextCellInFront))
             {
                 moves.Add(new TwoCellsMove(secondNextCellInFront, gameState, this));
             }
 
             // Eating in diagonal
-            var upRightCellInFront = new Coordinate(Position.X + 1, Position.Y + 1);
             if (IsDiagonalValid(upRightCellInFront, gameState))
             {
                 moves.Add(new SimpleMove(upRightCellInFront, gameState, this));
             }
 
-            var upLeftCellInFront = new Coordinate(Position.X - 1, Position.Y + 1);
             if (IsDiagonalValid(upLeftCellInFront, gameState))
             {
                 moves.Add(new SimpleMove(upLeftCellInFront, gameState, this));
             }
 
             // En Passant Left
-            var enPassantLeft = new Coordinate(Position.X - 1, Position.Y);
 
             if (IsEnPassantValid(enPassantLeft, upLeftCellInFront, gameState))
             {
@@ -89,7 +112,6 @@ namespace Piece
             }
 
             // En Passant Left
-            var enPassantRight = new Coordinate(Position.X - 1, Position.Y);
 
             if (IsEnPassantValid(enPassantRight, upRightCellInFront, gameState))
             {
@@ -101,7 +123,7 @@ namespace Piece
             // En Passant Right
             return moves;
         }
-
+       
         public override string ToString()
             => $"P ({Color})";
     }

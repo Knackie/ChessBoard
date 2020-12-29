@@ -33,7 +33,8 @@ namespace Board
                 throw new ArgumentException("No piece on this chess cell !");
             }
 
-            target.SetPiece(Piece!);
+            // target.SetPiece(Piece!);
+            target.SetPiece(new Rook(Piece!.Color, Coordinate));
 
             Piece = null;
         }

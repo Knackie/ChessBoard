@@ -4,6 +4,8 @@ using Player;
 using Piece;
 using Utils;
 using Board;
+using System.Linq;
+
 
 namespace Game
 {
@@ -46,31 +48,28 @@ namespace Game
 
         public void Play()
         {
-            if (IsGameOver)
+
+            /*if (IsGameOver)
             {
                 throw new ArgumentException("The game is over and no move can be performed !");
-            }
+            }*/
 
-            // Usage example:
-            //
-            // var piece = White.Pieces[0];
-            //
-            // var move = piece.GetAvailableMoves()
-            //     .FirstOrDefault();
-            //
-            // var currentPieceCell = Board.GetCellFor(piece.Position);
-            // var targetCell = Board.GetCellFor(move);
-            //
-            // currentPieceCell.MoveContentTo(targetCell);
+            var piece = Black.Pieces[6];
 
+            var moves = piece.GetAvailableMoves(this);
+
+            Console.WriteLine(moves.First());
+            moves.First().DoMove();
+
+            Console.WriteLine(ToString());
             // TODO: Retrieve the player currently playing
 
             // TODO: Make a move
-
+            
             // TODO: Toggle the playing player
 
             // Add to history the played move
-            History.Push(this.Copy());
+            History.Push(Copy());
 
             throw new NotImplementedException();
         }

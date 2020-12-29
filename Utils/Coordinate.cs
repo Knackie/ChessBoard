@@ -10,5 +10,10 @@ namespace Utils
 
         public Coordinate(int x, int y)
             => (X, Y) = (x, y);
+        
+        public override string ToString()
+        {
+            return "(" + X + ", " + Y + ")";
+        }
     }
 }

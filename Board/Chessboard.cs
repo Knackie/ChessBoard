@@ -32,12 +32,12 @@ namespace Board
             }
         }
 
-        private ChessCell InitializePieceAtCoordinate(Coordinate coordinate, Stack<Chessman> remainingBlackPieces, Stack<Chessman> remainingWhitePieces)
+        private static ChessCell InitializePieceAtCoordinate(Coordinate coordinate, Stack<Chessman> remainingBlackPieces, Stack<Chessman> remainingWhitePieces)
         {
             var rowsForPieces = 2;
 
-            var whitePiecesColumnRange = Enumerable.Range(0, rowsForPieces);
-            var blackPiecesColumnRange = Enumerable.Range(Dimension - rowsForPieces, Dimension);
+            var blackPiecesColumnRange = Enumerable.Range(0, rowsForPieces);
+            var whitePiecesColumnRange = Enumerable.Range(Dimension - rowsForPieces, Dimension);
 
             var currentColumn = coordinate.X;
 
