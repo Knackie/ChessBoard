@@ -15,12 +15,14 @@ namespace Piece
 
         public bool IsFirstMove { get; set; } = true;
 
-        public static bool IsEnPassantValid(Coordinate toCheck, Coordinate target, GameState gameState)
+        public bool IsEnPassantValid(Coordinate toCheck, Coordinate target, GameState gameState)
         {
             // if the cell to check is not empty
             return !gameState.Board.IsEmptyCell(toCheck)
-                  // and if the cell contains a pawn 
+                  // and if the cell contains a pawn
                   && gameState.Board.GetCellFor(toCheck).Piece is Pawn pawn
+						// and it's enemy pawn
+						&& pawn.Color != Color
                   // and has move from 2 cells
                   && pawn.HasMovedFromTwoCells
                   // and if the pawn had only one move
@@ -58,14 +60,14 @@ namespace Piece
             // Special move : go two cell in front of the pawn if it's the first move
             var secondNextCellInFront = new Coordinate(Position.X, Position.Y + 2);
 
-            if (IsFirstMove 
+            if (IsFirstMove
                 && gameState.Board.IsEmptyCell(secondNextCellInFront)
                 && Chessboard.IsInBoard(secondNextCellInFront))
             {
                 moves.Add(new TwoCellsMove(secondNextCellInFront, gameState, this));
             }
 
-            // Eating in diagonal 
+            // Eating in diagonal
             var upRightCellInFront = new Coordinate(Position.X + 1, Position.Y + 1);
             if (IsDiagonalValid(upRightCellInFront, gameState))
             {
@@ -88,12 +90,12 @@ namespace Piece
 
             // En Passant Left
             var enPassantRight = new Coordinate(Position.X - 1, Position.Y);
-           
+
             if (IsEnPassantValid(enPassantRight, upRightCellInFront, gameState))
             {
                 moves.Add(new EnPassant(upRightCellInFront, gameState, this));
             }
-        
+
 
 
             // En Passant Right
