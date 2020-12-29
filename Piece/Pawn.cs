@@ -1,72 +1,108 @@
-using System.Drawing;
-using System;
 using System.Collections.Generic;
-using Utils;
 using Board;
-using System.Linq;
+using Game;
+using Game.Moves;
+using Utils;
 
 namespace Piece
 {
-    public class Pawn : Chessman, IHasFirstMove
-    {
-        public Pawn(ChessColor color, Coordinate initialPosition)
-            : base(color, initialPosition) { }
+	public class Pawn : Chessman, IHasFirstMove
+	{
+		public bool HasMovedFromTwoCells { get; set; } = false;
 
-        public bool IsFirstMove { get; set; } = true;
+		public Pawn(ChessColor color, Coordinate initialPosition)
+			: base(color, initialPosition) { }
 
-        public bool IsDiagonalValid(Coordinate diagonalCoordinate, GameState gameState)
-        {
-            var diagonalCellColor = gameState.Board
-               .GetCellFor(diagonalCoordinate)
-               .Color;
+		public bool IsFirstMove { get; set; } = true;
 
-            var isDiagonalCellEatable = diagonalCellColor != Color
-                && diagonalCellColor != null;
+		public bool IsEnPassantValid(Coordinate toCheck, Coordinate target, GameState gameState)
+		{
+			// if the cell to check is not empty
+			return !gameState.Board.IsEmptyCell(toCheck)
+				// and if the cell contains a pawn
+				&& gameState.Board.GetCellFor(toCheck).Piece is Pawn pawn
+				// and it's enemy pawn
+				&& pawn.Color != Color
+				// and has move from 2 cells
+				&& pawn.HasMovedFromTwoCells
+				// and if the pawn had only one move
+				&& pawn.MoveCount == 1
+				// and is the target cell is empty to make the "en passant" move
+				&& gameState.Board.IsEmptyCell(target);
+		}
 
-            return Chessboard.IsInBoard(diagonalCoordinate)
-               && isDiagonalCellEatable;
-        }
+		public bool IsDiagonalValid(Coordinate diagonalCoordinate, GameState gameState)
+		{
+			var diagonalCellColor = gameState.Board
+				.GetCellFor(diagonalCoordinate)
+				.Color;
 
-        public override IEnumerable<Coordinate> GetAvailableMoves(GameState gameState)
-        {
-            var moves = new List<Coordinate>();
+			var isDiagonalCellEatable = diagonalCellColor != Color
+				&& diagonalCellColor != null;
 
-            // Standard move : move of one cell in front of the pawn
-            var nextCellInFront = new Coordinate(Position.X, Position.Y + 1);
+			return Chessboard.IsInBoard(diagonalCoordinate)
+				&& isDiagonalCellEatable;
+		}
 
-            if (Chessboard.IsInBoard(nextCellInFront)
-                && gameState.Board.IsEmptyCell(nextCellInFront))
-            {
-                moves.Add(nextCellInFront);
-            }
+		public override IEnumerable<Move> GetAvailableMoves(GameState gameState)
+		{
+			var moves = new List<Move>();
 
-            // Special move : go two cell in front of the pawn if it's the first move
-            var secondNextCellInFront = new Coordinate(Position.X, Position.Y + 2);
+			// Standard move : move of one cell in front of the pawn
+			var nextCellInFront = new Coordinate(Position.X, Position.Y + 1);
 
-            if (IsFirstMove 
-                && gameState.Board.IsEmptyCell(secondNextCellInFront)
-                && Chessboard.IsInBoard(secondNextCellInFront))
-            {
-                moves.Add(secondNextCellInFront);
-            }
+			if (Chessboard.IsInBoard(nextCellInFront)
+					&& gameState.Board.IsEmptyCell(nextCellInFront))
+			{
+				moves.Add(new SimpleMove(nextCellInFront, gameState, this));
+			}
 
-            // Eating in diagonal 
-            var upRightCellInFront = new Coordinate(Position.X + 1, Position.Y + 1);
-            if (IsDiagonalValid(upRightCellInFront, gameState))
-            {
-                moves.Add(upRightCellInFront);
-            }
+			// Special move : go two cell in front of the pawn if it's the first move
+			var secondNextCellInFront = new Coordinate(Position.X, Position.Y + 2);
 
-            var upLeftCellInFront = new Coordinate(Position.X - 1, Position.Y + 1);
-            if (IsDiagonalValid(upLeftCellInFront, gameState))
-            {
-                moves.Add(upLeftCellInFront);
-            }
+			if (IsFirstMove
+					&& gameState.Board.IsEmptyCell(secondNextCellInFront)
+					&& Chessboard.IsInBoard(secondNextCellInFront))
+			{
+				moves.Add(new TwoCellsMove(secondNextCellInFront, gameState, this));
+			}
 
-            return moves;
-        }
+			// Eating in diagonal
+			var upRightCellInFront = new Coordinate(Position.X + 1, Position.Y + 1);
+			if (IsDiagonalValid(upRightCellInFront, gameState))
+			{
+				moves.Add(new SimpleMove(upRightCellInFront, gameState, this));
+			}
 
-        public override string ToString()
-            => $"P ({Color})";
-    }
+			var upLeftCellInFront = new Coordinate(Position.X - 1, Position.Y + 1);
+			if (IsDiagonalValid(upLeftCellInFront, gameState))
+			{
+				moves.Add(new SimpleMove(upLeftCellInFront, gameState, this));
+			}
+
+			// En Passant Left
+			var enPassantLeft = new Coordinate(Position.X - 1, Position.Y);
+
+			if (IsEnPassantValid(enPassantLeft, upLeftCellInFront, gameState))
+			{
+				moves.Add(new EnPassant(upLeftCellInFront, gameState, this));
+			}
+
+			// En Passant Left
+			var enPassantRight = new Coordinate(Position.X - 1, Position.Y);
+
+			if (IsEnPassantValid(enPassantRight, upRightCellInFront, gameState))
+			{
+				moves.Add(new EnPassant(upRightCellInFront, gameState, this));
+			}
+
+
+
+			// En Passant Right
+			return moves;
+		}
+
+		public override string ToString()
+			=> $"P ({Color})";
+	}
 }

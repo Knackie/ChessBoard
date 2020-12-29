@@ -2,47 +2,52 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Utils;
-using Board;
+using Game;
+using Game.Moves;
 
 namespace Piece
 {
-    public abstract class Chessman
-    {
-        public readonly ChessColor Color;
+	public abstract class Chessman
+	{
+		public int MoveCount { get; private set; } = 0;
 
-        public bool IsTaken { get; private set; } = false;
+		public readonly ChessColor Color;
 
-        public Coordinate Position { get; set; }
+		public bool IsTaken { get; private set; } = false;
 
-        public Chessman(ChessColor color, Coordinate initialPosition)
-        {
-            Color = color;
-            Position = initialPosition;
-        }
+		public Coordinate Position { get; set; }
 
-        // TODO: implement in all subclasses
-        public abstract IEnumerable<Coordinate> GetAvailableMoves(GameState gameState);
-        
-        public void Move(Coordinate target, GameState gameState)
-        {
-            bool isMoveAllowed = GetAvailableMoves(gameState)
-                .Contains(target);
+		public Chessman(ChessColor color, Coordinate initialPosition)
+		{
+			Color = color;
+			Position = initialPosition;
+		}
 
-            if (!isMoveAllowed)
-            {
-                throw new ArgumentException("Impossible move !");
-            }
+		// TODO: implement in all subclasses
+		public abstract IEnumerable<Move> GetAvailableMoves(GameState gameState);
 
-            Position = target;   
-        }
-    
-        public void Take()
-        {
-            IsTaken = true;
-            Position = Coordinate.OutOfBoard;
-        }
+		public void Move(Coordinate target, GameState gameState)
+		{
+			//TODO : make the method
+			/*    bool isMoveAllowed = GetAvailableMoves(gameState)
+					.Contains(target);
 
-        public abstract override string ToString();
+					if (!isMoveAllowed)
+					{
+					throw new ArgumentException("Impossible move !");
+					}
 
-    }
+					Position = target;   */
+			++MoveCount;
+		}
+
+		public void Take()
+		{
+			IsTaken = true;
+			Position = Coordinate.OutOfBoard;
+		}
+
+		public abstract override string ToString();
+
+	}
 }

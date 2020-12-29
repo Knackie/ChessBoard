@@ -1,7 +1,7 @@
 ﻿using System;
-using Board;
+using Game;
 
-namespace ChessBoard
+namespace Main
 {
     class Program
     {
