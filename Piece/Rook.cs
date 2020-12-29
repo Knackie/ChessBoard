@@ -61,14 +61,13 @@ namespace Piece
                 {
                     return i + 1;
                 }
-                
+
             }
             return 0;
         }
 
         public override IEnumerable<Move> GetAvailableMoves(GameState gameState)
         {
-            /*
             var moves = new List<Move>();
 
             var minY = MinYIndexOfLine(gameState);
@@ -76,7 +75,7 @@ namespace Piece
             {
                 for (int i = 0; i > minY; i--)
                 {
-                    moves.Add(new (Position.X, i));
+                    moves.Add(new SimpleMove( new(Position.X, i), gameState, this));
                 }
 
             }
@@ -85,7 +84,7 @@ namespace Piece
             {
                 for (int i = 0; i < maxY; i++)
                 {
-                    moves.Add(new(Position.X, i));
+                    moves.Add(new SimpleMove( new(Position.X, i), gameState, this));
                 }
 
             }
@@ -94,7 +93,7 @@ namespace Piece
             {
                 for (int i = 0; i > minX; i--)
                 {
-                    moves.Add(new(i, Position.Y));
+                    moves.Add(new SimpleMove( new(i, Position.Y), gameState, this));
                 }
 
             }
@@ -103,13 +102,13 @@ namespace Piece
             {
                 for (int i = 0; i < maxX; i--)
                 {
-                    moves.Add(new( i, Position.Y));
+                    moves.Add(new SimpleMove( new( i, Position.Y), gameState, this));
                 }
 
             }
 
             // check from current position to max index if one piece for x to x max, x to x min, y to y min and y to y max
-            */
+				//
             return new List<Move>();
         }
 
