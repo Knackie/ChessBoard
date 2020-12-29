@@ -15,45 +15,73 @@ namespace Piece
 
 		private int MinXIndexOfLine(Chessboard board)
 		{
-			for (int i = Position.X + 1; i < Chessboard.Dimension; i++)
+			//we check for each case in a line the possible move
+			for (int xMin = Position.X + 1; xMin < Chessboard.Dimension; xMin++)
 			{
-				var target = new Coordinate(i, Position.Y);
+				var target = new Coordinate(xMin, Position.Y);
+
+				var piece = board.GetCellFor(target).Piece;
+				// if one on case is not empty
 				if (!board.IsEmptyCell(target))
 				{
-					return i - 1;
+					//and if this cell had a enemy chessman on
+					if (piece?.Color != Color)
+					{
+						//we can take it
+						return xMin;
+					}
+					else
+					{
+						//if it's not enemy chess, we can't take 
+						return xMin - 1;
+					}
 				}
-
 			}
 			return Chessboard.Dimension - 1;
 		}
 
 		private int MaxXIndexOfLine(Chessboard board)
 		{
-			for (int i = Position.X - 1; i >= 0; i--)
+			for (int xMax = Position.X - 1; xMax >= 0; xMax--)
 			{
-				var target = new Coordinate(i, Position.Y);
+				var target = new Coordinate(xMax, Position.Y);
+
+				var piece = board.GetCellFor(target).Piece;
+
 				if (!board.IsEmptyCell(target))
 				{
-					return i + 1;
+					if (piece?.Color != Color)
+					{
+						return xMax;
+					}
+					else
+					{
+						return xMax + 1;
+					}
 				}
-
 			}
 			return 0;
 		}
 
 		private int MaxYIndexOfLine(Chessboard board)
 		{
-			for (int i = Position.Y + 1; i < Chessboard.Dimension; i++)
+			for (int yMax = Position.Y + 1; yMax < Chessboard.Dimension; yMax++)
 			{
-				var target = new Coordinate(Position.X, i);
+				var target = new Coordinate(Position.X, yMax);
 
 				var piece = board.GetCellFor(target).Piece;
 
-				if (!board.IsEmptyCell(target)
-						|| piece.Color != Color)
-				{
-					return i - 1;
-				}
+				if (!board.IsEmptyCell(target))
+                {
+                    if (piece?.Color != Color)
+                    {
+                        return yMax;
+                    }
+					else
+                    {
+						return yMax - 1;
+                    }
+                }
 			}
 			return Chessboard.Dimension - 1;
 
@@ -61,14 +89,22 @@ namespace Piece
 
 		private int MinYIndexOfLine(Chessboard board)
 		{
-			for (int i = Position.Y-1; i >= 0; i--)
+			for (int yMin = Position.Y-1; yMin >= 0; yMin--)
 			{
-				var target = new Coordinate(Position.X, i);
+				var target = new Coordinate(Position.X, yMin);
+
+				var piece = board.GetCellFor(target).Piece;
 				if (!board.IsEmptyCell(target))
 				{
-					return i + 1;
+					if (piece?.Color != Color)
+					{
+						return yMin;
+					}
+					else
+                    {
+						return yMin + 1;
+                    }
 				}
-
 			}
 			return 0;
 		}
@@ -87,7 +123,7 @@ namespace Piece
 				}
 
 			}
-			var maxY = MinYIndexOfLine(board);
+			var maxY = MaxYIndexOfLine(board);
 			if (maxY != Position.Y)
 			{
 				for (int i = 0; i < maxY; i++)
@@ -96,8 +132,8 @@ namespace Piece
 				}
 
 			}
-			var minX = MinYIndexOfLine(board);
-			if (minX != Position.Y)
+			var minX = MinXIndexOfLine(board);
+			if (minX != Position.X)
 			{
 				for (int i = 0; i > minX; i--)
 				{
@@ -105,8 +141,8 @@ namespace Piece
 				}
 
 			}
-			var maxX = MinYIndexOfLine(board);
-			if (maxX != Position.Y)
+			var maxX = MaxXIndexOfLine(board);
+			if (maxX != Position.X)
 			{
 				for (int i = 0; i < maxX; i--)
 				{
