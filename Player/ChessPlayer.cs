@@ -21,7 +21,7 @@ namespace Player
         {
             Color = color;
 
-            Pieces = pieces;    
+            Pieces = pieces;
         }
 
         // TODO: player move in child classes

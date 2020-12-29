@@ -7,29 +7,29 @@ using Game.Moves;
 
 namespace Piece
 {
-	public abstract class Chessman
-	{
-		public int MoveCount { get; private set; } = 0;
+    public abstract class Chessman
+    {
+        public int MoveCount { get; private set; } = 0;
 
-		public readonly ChessColor Color;
+        public readonly ChessColor Color;
 
-		public bool IsTaken { get; private set; } = false;
+        public bool IsTaken { get; private set; } = false;
 
-		public Coordinate Position { get; set; }
+        public Coordinate Position { get; set; }
 
-		public Chessman(ChessColor color, Coordinate initialPosition)
-		{
-			Color = color;
-			Position = initialPosition;
-		}
+        public Chessman(ChessColor color, Coordinate initialPosition)
+        {
+            Color = color;
+            Position = initialPosition;
+        }
 
-		// TODO: implement in all subclasses
-		public abstract IEnumerable<Move> GetAvailableMoves(GameState gameState);
+        // TODO: implement in all subclasses
+        public abstract IEnumerable<Move> GetAvailableMoves(GameState gameState);
 
-		public void Move(Coordinate target, GameState gameState)
-		{
-			//TODO : make the method
-			/*    bool isMoveAllowed = GetAvailableMoves(gameState)
+        public void Move(Coordinate target, GameState gameState)
+        {
+            //TODO : make the method
+            /*    bool isMoveAllowed = GetAvailableMoves(gameState)
 					.Contains(target);
 
 					if (!isMoveAllowed)
@@ -38,16 +38,16 @@ namespace Piece
 					}
 
 					Position = target;   */
-			++MoveCount;
-		}
+            ++MoveCount;
+        }
 
-		public void Take()
-		{
-			IsTaken = true;
-			Position = Coordinate.OutOfBoard;
-		}
+        public void Take()
+        {
+            IsTaken = true;
+            Position = Coordinate.OutOfBoard;
+        }
 
-		public abstract override string ToString();
+        public abstract override string ToString();
 
-	}
+    }
 }

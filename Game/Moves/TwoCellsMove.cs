@@ -10,7 +10,7 @@ namespace Game.Moves
 {
     class TwoCellsMove : Move
     {
-        public TwoCellsMove(Coordinate target, GameState gameState, Chessman piece) 
+        public TwoCellsMove(Coordinate target, GameState gameState, Chessman piece)
             : base(target, gameState, piece) { }
 
         protected override void DoMoveIntermediarySteps()
