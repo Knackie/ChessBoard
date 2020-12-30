@@ -12,9 +12,8 @@ namespace Piece
 {
     class Bishop : Chessman
     {
-        public Bishop(ChessColor color, Coordinate initialPosition) : base(color, initialPosition)
-        {
-        }
+        public Bishop(ChessColor color, Coordinate initialPosition) 
+            : base(color, initialPosition) { }
 
         public override IEnumerable<Move> GetAvailableMoves(GameState gameState)
         {

@@ -59,7 +59,7 @@ namespace Game
             var moves = piece.GetAvailableMoves(this);
 
             Console.WriteLine(moves.First());
-            moves.First().DoMove();
+            moves.Last().DoMove();
 
             Console.WriteLine(ToString());
             // TODO: Retrieve the player currently playing
